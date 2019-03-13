@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet author="hvizdos" id="create-tables">
+        <createTable tableName="gps_data">
+            <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true" /></column>
+            <column name="upload_time" type="DATETIME"><constraints nullable="false" /></column>
+            <column name="data" type="CLOB"><constraints nullable="false" /></column>
+        </createTable>
+
+        <createTable tableName="route_summary">
+            <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true" /></column>
+            <column name="data_id" type="BIGINT"><constraints nullable="false" /></column>
+            <column name="start_latitude" type="DECIMAL"><constraints nullable="false" /></column>
+            <column name="start_longitude" type="DECIMAL"><constraints nullable="false" /></column>
+            <column name="start_elevation" type="DECIMAL"><constraints nullable="false" /></column>
+            <column name="start_time" type="DATETIME"><constraints nullable="false" /></column>
+            <column name="end_latitude" type="DECIMAL"><constraints nullable="false" /></column>
+            <column name="end_longitude" type="DECIMAL"><constraints nullable="false" /></column>
+            <column name="end_elevation" type="DECIMAL"><constraints nullable="false" /></column>
+            <column name="end_time" type="DATETIME"><constraints nullable="false" /></column>
+            <column name="total_distance" type="DECIMAL"><constraints nullable="false" /></column>
+            <column name="start_end_distance" type="DECIMAL"><constraints nullable="false" /></column>
+            <column name="average_speed" type="DECIMAL" />
+            <column name="upload_time" type="DATETIME"><constraints nullable="false" /></column>
+        </createTable>
+
+        <addForeignKeyConstraint constraintName="fk_summary_data" baseTableName="route_summary" baseColumnNames="data_id" referencedTableName="gps_data" referencedColumnNames="id"/>
+
+        <createTable tableName="nearby_place">
+            <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true" /></column>
+            <column name="data_id" type="BIGINT"><constraints nullable="false" /></column>
+            <column name="distance" type="DECIMAL"><constraints nullable="false" /></column>
+            <column name="title" type="VARCHAR(255)"><constraints nullable="false" /></column>
+            <column name="category" type="VARCHAR(255)"><constraints nullable="false" /></column>
+        </createTable>
+
+        <addForeignKeyConstraint constraintName="fk_nearby_data" baseTableName="nearby_place" baseColumnNames="data_id" referencedTableName="gps_data" referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>
